@@ -1,0 +1,2 @@
+# Hazecast Near Cache Test #
+
