@@ -13,7 +13,7 @@ object HazelcastServer extends App {
   val clientConfig = new Config
   val hcInstance: HazelcastInstance = Hazelcast.newHazelcastInstance(clientConfig)
 
-  // Is there an idiomatic Scala way of writing this that does not require asInstanceOf?
+  // Nils: Is there an idiomatic Scala way of writing this that does not require asInstanceOf?
   val cityCache = hcInstance.getMap("Cities").asScala.asInstanceOf[mutable.Map[Long, String]]
 
   0 to Settings.mapSize foreach { i => cityCache.put(i, s"City #$i") }
