@@ -16,8 +16,7 @@ object HazelcastServer extends App {
   // Nils: Is there an idiomatic Scala way of writing this that does not require asInstanceOf?
   val cityCache = hcInstance.getMap("Cities").asScala.asInstanceOf[mutable.Map[Long, String]]
 
-  0 to Settings.mapSize foreach { i => cityCache.put(i, s"City #$i") }
-  println("HazelcastServer: cityCache.size=" + cityCache.size)
+  0 to Settings.mapSize foreach { i => cityCache.put(i.toLong, s"City #$i") }
 
   println("Enter a key,value pair for a cityCache entry (key value must >=0 and <$mapSize)")
   print(Settings.prompt)

@@ -15,13 +15,12 @@ object NearClient extends App {
         .setEvictionPolicy("LRU")
         .setMaxSize(Settings.mapSize)
         .setInvalidateOnChange(true)
-
   val nearCache =  mutable.HashMap.empty[String, NearCacheConfig]
   clientConfig.addNearCacheConfig(nearCacheConfig)
 
   val client = HazelcastClient.newHazelcastClient(clientConfig)
-
   var cityProxy: IMap[Long, String] = client.getMap("Cities")
+
   cityProxy.onKeyEvents() {
     case KeyAdded(key) =>
       println(s"Key $key added with value ${cityProxy.get(key)}")
