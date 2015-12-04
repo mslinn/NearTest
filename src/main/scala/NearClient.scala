@@ -7,19 +7,21 @@ import scala.collection.mutable
 
 /** Read-mostly client, only updates user-related info */
 object NearClient extends App {
+  import Settings._
+
   val clientConfig = new ClientConfig()
   var nearCacheConfig: NearCacheConfig =
-    Option(clientConfig.getNearCacheConfig(Settings.cacheName))
-      .getOrElse(new NearCacheConfig(Settings.cacheName))
-        .setCacheLocalEntries(true)
+    Option(clientConfig.getNearCacheConfig(cacheName))
+      .getOrElse(new NearCacheConfig(cacheName))
         .setEvictionPolicy("LRU")
+        //.setCacheLocalEntries(true) // already set in hazelcast.xml
         //.setMaxSize(Settings.mapSize)
         //.setInvalidateOnChange(true)
   val nearCache =  mutable.HashMap.empty[String, NearCacheConfig]
   clientConfig.addNearCacheConfig(nearCacheConfig)
 
   val client = HazelcastClient.newHazelcastClient(clientConfig)
-  var cityProxy: IMap[Long, String] = client.getMap(Settings.cacheName)
+  var cityProxy: IMap[Long, String] = client.getMap(cacheName)
 
   // FIXME onKeyEvent only fires if the modified cityCache.key==0
   cityProxy.onEntryEvents() {

@@ -12,13 +12,15 @@ object Settings {
 
 /** Domain objects are stored as mutable Maps here, next to the DB */
 object HazelcastServer extends App {
+  import Settings._
+
   val clientConfig = new Config
   val hz: HazelcastInstance = Hazelcast.newHazelcastInstance(clientConfig)
-  val cityCache: IMap[Long, String] = hz.getMap[Long, String](Settings.cacheName)
-  0 to Settings.mapSize foreach { i => cityCache.put(i.toLong, s"City #$i") }
+  val cityCache: IMap[Long, String] = hz.getMap[Long, String](cacheName)
+  0 to mapSize foreach { i => cityCache.put(i.toLong, s"City #$i") }
 
-  println(s"Enter a key,value pair for a cityCache entry (key value must >=0 and <${Settings.mapSize})")
-  print(Settings.prompt)
+  println(s"Enter a key,value pair for a cityCache entry (key value must >=0 and <$mapSize)")
+  print(prompt)
   io.Source.stdin.getLines.foreach { line =>
     try {
       val Array(key, value) = line.split(",").map(_.trim)
@@ -28,7 +30,7 @@ object HazelcastServer extends App {
       case e: Exception =>
         println(e.getMessage)
     } finally {
-      print(Settings.prompt)
+      print(prompt)
     }
   }
 }
