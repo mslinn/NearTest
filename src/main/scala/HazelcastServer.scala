@@ -1,7 +1,8 @@
 import collection.JavaConverters._
 import collection.mutable
 import com.hazelcast.config.Config
-import com.hazelcast.core.{HazelcastInstance, Hazelcast}
+import com.hazelcast.core.{IMap, HazelcastInstance, Hazelcast}
+import com.hazelcast.Scala._
 
 object Settings {
   val mapSize = 10
@@ -12,11 +13,8 @@ object Settings {
 /** Domain objects are stored as mutable Maps here, next to the DB */
 object HazelcastServer extends App {
   val clientConfig = new Config
-  val hcInstance: HazelcastInstance = Hazelcast.newHazelcastInstance(clientConfig)
-
-  // Nils: Is there an idiomatic Scala way of writing this that does not require asInstanceOf?
-  val cityCache = hcInstance.getMap(Settings.cacheName).asScala.asInstanceOf[mutable.Map[Long, String]]
-
+  val hz: HazelcastInstance = Hazelcast.newHazelcastInstance(clientConfig)
+  val cityCache: IMap[Long, String] = hz.getMap[Long, String](Settings.cacheName)
   0 to Settings.mapSize foreach { i => cityCache.put(i.toLong, s"City #$i") }
 
   println("Enter a key,value pair for a cityCache entry (key value must >=0 and <$mapSize)")

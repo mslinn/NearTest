@@ -13,8 +13,8 @@ object NearClient extends App {
       .getOrElse(new NearCacheConfig(Settings.cacheName))
         .setCacheLocalEntries(true)
         .setEvictionPolicy("LRU")
-        .setMaxSize(Settings.mapSize)
-        .setInvalidateOnChange(true)
+        //.setMaxSize(Settings.mapSize)
+        //.setInvalidateOnChange(true)
   val nearCache =  mutable.HashMap.empty[String, NearCacheConfig]
   clientConfig.addNearCacheConfig(nearCacheConfig)
 
@@ -22,12 +22,12 @@ object NearClient extends App {
   var cityProxy: IMap[Long, String] = client.getMap(Settings.cacheName)
 
   // FIXME onKeyEvent only fires if the modified cityCache.key==0
-  cityProxy.onKeyEvents() {
-    case KeyAdded(key) =>
-      println(s"Key $key added with value ${cityProxy.get(key)}")
+  cityProxy.onEntryEvents() {
+    case EntryAdded(key, value) =>
+      println(s"Key $key added with value $value")
 
-    case KeyUpdated(key) =>
-      println(s"Key $key updated with value ${cityProxy.get(key)}")
+    case EntryUpdated(key, oldValue, newValue) =>
+      println(s"Key $key updated with value $newValue")
 
     case event =>
       println(s"Unhandled event $event")
