@@ -1,5 +1,3 @@
-// If you have JDK 6 and not JDK 7 then replace all three instances of the number 7 to the number 6
-
 organization := "com.micronautics"
 
 name := "near-test"
@@ -45,6 +43,12 @@ logLevel in test := Level.Info
 initialCommands in console := """
                                 |import com.hazelcast.core.Hazelcast
                                 |import com.hazelcast.core.HazelcastInstance
+                                |import com.hazelcast.Scala._
+                                |import com.hazelcast.client.HazelcastClient
+                                |import com.hazelcast.client.config.ClientConfig
+                                |import com.hazelcast.config.NearCacheConfig
+                                |import com.hazelcast.core.IMap
+                                |import scala.collection.mutable
                                 |""".stripMargin
 
 cancelable := true

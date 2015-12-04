@@ -23,7 +23,7 @@ object NearClient extends App {
 
   var cityProxy: IMap[Long, String] = client.getMap("Cities")
   cityProxy.onKeyEvents() {
-    case KeyAdded(key)   =>
+    case KeyAdded(key) =>
       println(s"Key $key added with value ${cityProxy.get(key)}")
 
     case KeyUpdated(key) =>
