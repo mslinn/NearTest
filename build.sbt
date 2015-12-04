@@ -21,13 +21,15 @@ scalacOptions in (Compile, doc) <++= baseDirectory.map {
 javacOptions ++= Seq("-Xlint:deprecation", "-Xlint:unchecked", "-source", "1.7", "-target", "1.7", "-g:vars")
 
 resolvers ++= Seq(
+  "nilskp/maven on bintray" at "http://dl.bintray.com/nilskp/maven",
   "Typesafe Releases"   at "http://repo.typesafe.com/typesafe/releases"
 )
 
 libraryDependencies ++= Seq(
-  "com.hazelcast" % "hazelcast-client" % "3.5.4" withSources()
-//  "org.scalatest"           %% "scalatest"     % "2.2.3" % "test" withSources(),
-//  "com.github.nscala-time"  %% "nscala-time"   % "1.8.0" withSources()
+  "com.hazelcast" %% "hazelcast-scala"  % "latest.integration" withSources(),
+  "com.hazelcast" %  "hazelcast-client" % "3.5.4" withSources()
+  //"org.scalatest"           %% "scalatest"     % "2.2.3" % "test" withSources(),
+  //"com.github.nscala-time"  %% "nscala-time"   % "1.8.0" withSources()
 )
 
 logLevel := Level.Warn

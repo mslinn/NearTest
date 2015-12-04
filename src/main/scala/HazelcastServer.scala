@@ -5,7 +5,7 @@ import com.hazelcast.core.{HazelcastInstance, Hazelcast}
 
 object Settings {
   val mapSize = 10
-  val prompt = "> "
+  val prompt = "key,value > "
 }
 
 /** Domain objects are stored as mutable Maps here, next to the DB */
@@ -24,10 +24,18 @@ object HazelcastServer extends App {
     println(s"HazelcastServer: citiesMap2($i) = ${citiesMap2.get(i)}")
   }
 
-  println("Enter new values for cityCache(0)")
+  println("Enter a key,value pair for a cityCache entry (key value must >=0 and <$mapSize)")
   print(Settings.prompt)
   io.Source.stdin.getLines.foreach { line =>
-    cityCache.put(0L, line)
-    print(Settings.prompt)
+    try {
+      val Array(key, value) = line.split(",").map(_.trim)
+      println(s"Updating cityCache($key) with '$value'")
+      cityCache.put(key.toLong, value)
+    } catch {
+      case e: Exception =>
+        println(e.getMessage)
+    } finally {
+      print(Settings.prompt)
+    }
   }
 }
