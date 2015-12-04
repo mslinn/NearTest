@@ -19,7 +19,7 @@ object HazelcastServer extends App {
   val cityCache: IMap[Long, String] = hz.getMap[Long, String](cacheName)
   0 to mapSize foreach { i => cityCache.put(i.toLong, s"City #$i") }
 
-  println(s"Enter a key,value pair for a cityCache entry (key value must >=0 and <$mapSize)")
+  println(s"Enter a key,value pair for a cityCache entry (key value must >=0 and <${cityCache.size})")
   print(prompt)
   io.Source.stdin.getLines.foreach { line =>
     try {

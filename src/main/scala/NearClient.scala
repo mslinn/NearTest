@@ -15,7 +15,6 @@ object NearClient extends App {
       .getOrElse(new NearCacheConfig(cacheName))
         .setEvictionPolicy("LRU")
         //.setCacheLocalEntries(true) // already set in hazelcast.xml
-        //.setMaxSize(Settings.mapSize)
         //.setInvalidateOnChange(true)
   val nearCache =  mutable.HashMap.empty[String, NearCacheConfig]
   clientConfig.addNearCacheConfig(nearCacheConfig)
