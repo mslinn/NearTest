@@ -9,8 +9,8 @@ import scala.collection.mutable
 object NearClient extends App {
   val clientConfig = new ClientConfig()
   var nearCacheConfig: NearCacheConfig =
-    Option(clientConfig.getNearCacheConfig("Cities"))
-      .getOrElse(new NearCacheConfig("Cities"))
+    Option(clientConfig.getNearCacheConfig(Settings.cacheName))
+      .getOrElse(new NearCacheConfig(Settings.cacheName))
         .setCacheLocalEntries(true)
         .setEvictionPolicy("LRU")
         .setMaxSize(Settings.mapSize)
@@ -19,7 +19,7 @@ object NearClient extends App {
   clientConfig.addNearCacheConfig(nearCacheConfig)
 
   val client = HazelcastClient.newHazelcastClient(clientConfig)
-  var cityProxy: IMap[Long, String] = client.getMap("Cities")
+  var cityProxy: IMap[Long, String] = client.getMap(Settings.cacheName)
 
   // FIXME onKeyEvent only fires if the modified cityCache.key==0
   cityProxy.onKeyEvents() {

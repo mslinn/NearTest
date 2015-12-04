@@ -6,6 +6,7 @@ import com.hazelcast.core.{HazelcastInstance, Hazelcast}
 object Settings {
   val mapSize = 10
   val prompt = "key,value > "
+  val cacheName = "Cities"
 }
 
 /** Domain objects are stored as mutable Maps here, next to the DB */
@@ -14,7 +15,7 @@ object HazelcastServer extends App {
   val hcInstance: HazelcastInstance = Hazelcast.newHazelcastInstance(clientConfig)
 
   // Nils: Is there an idiomatic Scala way of writing this that does not require asInstanceOf?
-  val cityCache = hcInstance.getMap("Cities").asScala.asInstanceOf[mutable.Map[Long, String]]
+  val cityCache = hcInstance.getMap(Settings.cacheName).asScala.asInstanceOf[mutable.Map[Long, String]]
 
   0 to Settings.mapSize foreach { i => cityCache.put(i.toLong, s"City #$i") }
 
