@@ -28,5 +28,8 @@ object NearClient extends App {
 
     case KeyUpdated(key) =>
       println(s"Key $key updated with value ${cityProxy.get(key)}")
+
+    case event =>
+      println(s"Unhandled event $event")
   }
 }
