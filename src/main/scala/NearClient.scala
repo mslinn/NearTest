@@ -29,7 +29,6 @@ object NearClient extends App {
   val client = HazelcastClient.newHazelcastClient(clientConfig)
   var cityProxy: IMap[Long, String] = client.getMap(cacheName)
 
-  // FIXME onKeyEvent only fires if the modified cityCache.key==0
   cityProxy.onEntryEvents() {
     case EntryAdded(key, value) =>
       println(s"Key $key added with value $value")
