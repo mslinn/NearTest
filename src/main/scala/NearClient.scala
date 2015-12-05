@@ -1,21 +1,28 @@
 import com.hazelcast.Scala._
 import com.hazelcast.client.HazelcastClient
 import com.hazelcast.client.config.ClientConfig
-import com.hazelcast.config.NearCacheConfig
+import com.hazelcast.config.{InMemoryFormat, NearCacheConfig}
+import com.hazelcast.config.EvictionPolicy.LRU
 import com.hazelcast.core.IMap
+import com.typesafe.config.ConfigFactory
 import scala.collection.mutable
 
 /** Read-mostly client, only updates user-related info */
 object NearClient extends App {
   import Settings._
 
+  val appConfig = ConfigFactory.parseResources("nearClient.conf")
+  val citiesConfig = appConfig.getConfig(cacheName).resolve
+
   val clientConfig = new ClientConfig()
   var nearCacheConfig: NearCacheConfig =
-    Option(clientConfig.getNearCacheConfig(cacheName))
-      .getOrElse(new NearCacheConfig(cacheName))
-        .setEvictionPolicy("LRU")
-        //.setCacheLocalEntries(true) // already set in hazelcast.xml
-        //.setInvalidateOnChange(true)
+    new NearCacheConfig(cacheName)
+      .setCacheLocalEntries(true)
+      .setInvalidateOnChange(true)
+      .setMaxSize(citiesConfig.getInt("maxSize"))
+      .setTimeToLiveSeconds(citiesConfig.getInt("ttl"))
+      .setEvictionPolicy(LRU.name)
+      .setInMemoryFormat(InMemoryFormat.OBJECT)
   val nearCache =  mutable.HashMap.empty[String, NearCacheConfig]
   clientConfig.addNearCacheConfig(nearCacheConfig)
 

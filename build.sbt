@@ -25,7 +25,8 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "com.hazelcast" %% "hazelcast-scala"  % "latest.integration" withSources(),
-  "com.hazelcast" %  "hazelcast-client" % "3.5.4" withSources()
+  "com.hazelcast" %  "hazelcast-client" % "3.5.4" withSources(),
+  "com.typesafe"  %  "config"           % "1.3.0" withSources()
   //"org.scalatest"           %% "scalatest"     % "2.2.3" % "test" withSources(),
   //"com.github.nscala-time"  %% "nscala-time"   % "1.8.0" withSources()
 )
