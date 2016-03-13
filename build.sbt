@@ -4,7 +4,7 @@ name := "near-test"
 
 version := "0.1.0"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 scalacOptions ++= Seq("-deprecation", "-encoding", "UTF-8", "-feature", "-target:jvm-1.7", "-unchecked",
     "-Ywarn-adapted-args", "-Ywarn-value-discard", "-Xlint")
@@ -20,7 +20,7 @@ javacOptions ++= Seq("-Xlint:deprecation", "-Xlint:unchecked", "-source", "1.7",
 
 resolvers ++= Seq(
   "nilskp/maven on bintray" at "http://dl.bintray.com/nilskp/maven",
-  "Typesafe Releases"   at "http://repo.typesafe.com/typesafe/releases"
+  "Lightbend Releases"      at "http://repo.typesafe.com/typesafe/releases"
 )
 
 libraryDependencies ++= Seq(
